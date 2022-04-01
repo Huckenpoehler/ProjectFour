@@ -30,6 +30,28 @@ public class ProjectFour {
         }
         return output;
     }
+    
+    public static boolean signUp(String username, String password, String type) {
+        boolean out = false;
+        if (checkLogIn(username, password).equals("")) {
+            if (type.equals("teacher") || type.equals("student")) {
+                try {
+                    FileOutputStream fos = new FileOutputStream("usernamespasswords.txt", true); 
+                    PrintWriter pw = new PrintWriter(fos);
+                    pw.println(type);
+                    pw.println("username: " + username);
+                    pw.println("password: " + password);
+                    pw.close();
+                    out = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            out = false;
+        }
+        return out;
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
