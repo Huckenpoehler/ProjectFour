@@ -18,7 +18,8 @@ public class ProjectFour {
 
                 if (name.equals(username)) {
                     if (pass.equals(password)) {
-                        
+                        line = null;
+                        output = accounttype;
                     }
                 }
             }
