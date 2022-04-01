@@ -48,7 +48,15 @@ public class ProjectFour {
 
             String checklogin = checkLogIn(username, password);
 
-            //teachers crete, edit, quizzes, create, edit, and delete
+            if (!checklogin.equals("")) {
+                if (checklogin.equals("teacher")) {
+                    Teacher teacher = new Teacher();
+                    teacher.showMenu();
+                    int choice = Integer.parseInt(scanner.nextLine());
+                } else if (checklogin.equals("student")) {
+                    Student student = new Student();
+                }
+            }
         } else if (loginMenu == 2) {
 
         } else {
