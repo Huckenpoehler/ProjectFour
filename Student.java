@@ -7,24 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Student {
-    private int submissions;
     private String userName;
-    private String quizName;
 
-    Scanner scanner = new Scanner(System.in);
+    //Scanner scanner = new Scanner(System.in);
 
-    public Student(int submissions, String userName, String quizName) {
-        this.submissions = submissions;
+    public Student(String userName) {
         this.userName = userName;
-        this.quizName = quizName;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return this.userName;
-    }
-
-    public String getQuizName() {
-        return this.quizName;
     }
 
     public void takeQuiz() {
