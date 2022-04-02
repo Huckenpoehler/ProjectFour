@@ -64,10 +64,13 @@ public class ProjectFour {
             
             bfr.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            d
         }
         return output;
     }
+
+
+    public static signUp(String username, String password, String type) {
 
     public static void signUp(String username, String password, String type) {
         try {
@@ -77,6 +80,7 @@ public class ProjectFour {
             pw.println("username: " + username);
             pw.println("password: " + password);
             pw.close();
+            out = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,6 +99,7 @@ public class ProjectFour {
         String password = "";
         String checklogin = "";
         String type = "";
+
         while (ongoing) {
             if (loginMenu == 1) {
                 if (!signup) {
@@ -102,6 +107,16 @@ public class ProjectFour {
                     username = scanner.nextLine();
                     System.out.println("Enter your password:");
                     password = scanner.nextLine();
+                
+                }
+    
+                String checklogin = checkLogIn(username, password);
+                
+                if (checklogin.equals("teacher")) {
+                    Teacher teacher = new Teacher();
+                    teacher.showMenu();
+                    int choice = Integer.parseInt(scanner.nextLine());
+
                     checklogin = checkLogIn(username, password);
                 } else {
                     checklogin = type;
@@ -112,6 +127,7 @@ public class ProjectFour {
                     Teacher teacher = new Teacher();
                     //teacher.showMenu();
                     //int choice = Integer.parseInt(scanner.nextLine());
+
                 } 
                 if (checklogin.equals("student")) {
                     Student student = new Student();
@@ -121,7 +137,11 @@ public class ProjectFour {
                 }
             } else if (loginMenu == 2) {
                 System.out.println("Enter account type (teacher/student):");
+
+                String type= scanner.nextLine();
+
                 type = scanner.nextLine();
+
                 System.out.println("Enter username:");
                 username = scanner.nextLine();
                 System.out.println("Enter password:");
@@ -143,6 +163,7 @@ public class ProjectFour {
                     loginMenu = 1;
                     signup = true;
                 } else {
+                    if (typeerror.equls("incorrect")) {
                     if (typeerror.equals("incorrect")) {
                         System.out.println("Wrong account type!");
                         System.out.println("--------------------------------");
