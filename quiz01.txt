@@ -1,0 +1,14 @@
+1.
+What is the effect of this on that?
+a. blah blh 
+b. blah blh blah
+c. blah 
+d. blah blh blah blah
+Answer: d
+2.
+What is the answer to some theorem?
+a. blah blh 
+b. blah blh blah
+c. blah 
+d. blah blh blah blah
+Answer: c
