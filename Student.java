@@ -15,7 +15,7 @@ public class Student {
         this.userName = userName;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return this.userName;
     }
 
