@@ -155,4 +155,68 @@ public class Student {
 
 
     }
+    
+     public void viewSubmission(Scanner scanner) {
+        ArrayList<String> quizList = new ArrayList<>();
+        File quiz = new File("quiz.txt");
+        if (quiz.length() == 0) {
+            // see if quiz.txt is empty
+            System.out.println("No quiz created!");
+        } else {
+            // if not empty
+            // read from the quiz list
+            try {
+                BufferedReader bfr = new BufferedReader(new FileReader("quiz.txt"));
+                String line = bfr.readLine();
+                while (line != null) {
+                    quizList.add(line);
+                    line = bfr.readLine();
+                }
+                bfr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // display the quiz list
+            for (int i = 0; i < quizList.size(); i++) {
+                System.out.print(i + 1 + ".");
+                System.out.println(quizList.get(i));
+            }
+
+            // select a quiz to view
+            System.out.println("Type a number to select a quiz:");
+            int chooseQuiz = scanner.nextInt();
+
+            if (chooseQuiz <= quizList.size() && chooseQuiz > 0) { // see if the input range between 1 - quizList.size()
+
+                // chosen quiz name
+                String chosenGrade = "quiz0" + chooseQuiz +  "_" + getUserName() + "_grade.txt";
+                File gradeBook = new File(chosenGrade);
+
+                if (gradeBook.exists()) { // see if the file exists
+                    // read from user's grade book
+                    ArrayList<String> point = new ArrayList<>();
+                    try { // read quiz0x_completed
+                        BufferedReader bfr = new BufferedReader(new FileReader(gradeBook));
+                        String line = bfr.readLine();
+                        while (line != null) {
+                            point.add(line);
+                            line = bfr.readLine();
+                        }
+                        bfr.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    for (String s: point){
+                        System.out.println(s);
+                    }
+                } else {
+                    System.out.println("Your teacher hasn't graded your quiz yet!");
+                }
+            } else {
+                System.out.println("Invalid input, please type a valid number!");
+            }
+        }
+    }
 }
