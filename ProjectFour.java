@@ -6,7 +6,7 @@ public class ProjectFour {
     public static boolean checkUsername(String username) {
         boolean out = true;
         try {
-            FileReader fr = new FileReader("usernamespasswords.txt");
+            FileReader fr = new FileReader("users.txt");
             BufferedReader bfr = new BufferedReader(fr);
             String line = "";
             while (line != null) {
@@ -33,7 +33,7 @@ public class ProjectFour {
     public static String checkLogIn(String username, String password) {
         String output = "";
         try {
-            FileReader fr = new FileReader("usernamespasswords.txt");
+            FileReader fr = new FileReader("users.txt");
             BufferedReader bfr = new BufferedReader(fr);
             String line = "";
             while (line != null) {
@@ -64,45 +64,19 @@ public class ProjectFour {
             
             bfr.close();
         } catch (IOException e) {
-            d
+            e.printStackTrace();
         }
         return output;
     }
-    
-    public static boolean signUp(String username, String password, String type) {
-        boolean out = false;
-        if (checkLogIn(username, password).equals("")) {
-            if (type.equals("teacher") || type.equals("student")) {
-                try {
-                    FileOutputStream fos = new FileOutputStream("usernamespasswords.txt", true); 
-                    PrintWriter pw = new PrintWriter(fos);
-                    pw.println(type);
-                    pw.println("username: " + username);
-                    pw.println("password: " + password);
-                    pw.close();
-                    out = true;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            out = false;
-        }
-        return out;
-    }
-
-
-    public static signUp(String username, String password, String type) {
 
     public static void signUp(String username, String password, String type) {
         try {
-            FileOutputStream fos = new FileOutputStream("usernamespasswords.txt", true); 
+            FileOutputStream fos = new FileOutputStream("users.txt", true); 
             PrintWriter pw = new PrintWriter(fos);
             pw.println(type);
             pw.println("username: " + username);
             pw.println("password: " + password);
             pw.close();
-            out = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,7 +95,10 @@ public class ProjectFour {
         String password = "";
         String checklogin = "";
         String type = "";
-
+        Student student = null;
+        Teacher teacher = null;
+        boolean firstteacher = true;
+        boolean firststudent = true;
         while (ongoing) {
             if (loginMenu == 1) {
                 if (!signup) {
@@ -129,41 +106,56 @@ public class ProjectFour {
                     username = scanner.nextLine();
                     System.out.println("Enter your password:");
                     password = scanner.nextLine();
-                
-                }
-    
-                String checklogin = checkLogIn(username, password);
-                
-                if (checklogin.equals("teacher")) {
-                    Teacher teacher = new Teacher();
-                    teacher.showMenu();
-                    int choice = Integer.parseInt(scanner.nextLine());
-
                     checklogin = checkLogIn(username, password);
                 } else {
                     checklogin = type;
                 }
     
                 
-                if (checklogin.equals("teacher")) {
-                    Teacher teacher = new Teacher();
-                    //teacher.showMenu();
-                    //int choice = Integer.parseInt(scanner.nextLine());
-
+                if (checklogin.equals("teacher")) { 
+                    type = "teacher";                   
+                    if (firstteacher) {
+                        teacher = new Teacher(username);
+                        firstteacher = false;
+                    }
+                    teacher.viewMenu();
+                    int choice = Integer.parseInt(scanner.nextLine());
+                    if (choice == 1) {
+                        //teacher.createQuiz(scanner);
+                    } else if (choice == 2) {
+                        //teacher.editQuiz(scanner);
+                    } else if (choice == 3) {
+                        //teacher.deleteQuiz(scanner);
+                    } else if (choice == 4) {
+                        //teacher.viewSubmission(scanner);
+                    } else if (choice == 5) {
+                        //ongoing = false;
+                    }
+                    signup = true;
                 } 
                 if (checklogin.equals("student")) {
-                    Student student = new Student();
+                    type = "student"; 
+                    if (firststudent) {
+                        student = new Student(username);
+                        firststudent = false;
+                    }
+                    student.viewMenu();
+                    int choice = Integer.parseInt(scanner.nextLine());
+                    if (choice == 1) {
+                        student.takeQuiz(scanner);
+                    } else if (choice == 2) {
+                        student.viewSubmission(scanner);
+                    } else if (choice == 3) {
+                        ongoing = false;
+                    }
+                    signup = true;
                 }
                 if (checklogin.equals("")) {
                     System.out.println("Incorrect username or password! Plese try again.");
                 }
             } else if (loginMenu == 2) {
                 System.out.println("Enter account type (teacher/student):");
-
-                String type= scanner.nextLine();
-
                 type = scanner.nextLine();
-
                 System.out.println("Enter username:");
                 username = scanner.nextLine();
                 System.out.println("Enter password:");
@@ -185,7 +177,6 @@ public class ProjectFour {
                     loginMenu = 1;
                     signup = true;
                 } else {
-                    if (typeerror.equls("incorrect")) {
                     if (typeerror.equals("incorrect")) {
                         System.out.println("Wrong account type!");
                         System.out.println("--------------------------------");
@@ -207,3 +198,4 @@ public class ProjectFour {
 
     }
 }
+
