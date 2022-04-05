@@ -10,6 +10,144 @@ public class Teacher {
         this.userName = userName;
     }
 
+    /**	createQuiz
+	 * 
+	 * 	Method exclusive to Teacher. Prompts for a question prompt
+	 * 	and answer choices, and then 1) creates a reference in quiz.txt
+	 * 	and 2) creates a new file titled 'quiz0X.txt'.
+	 */
+	public void createQuiz(Scanner scanner) {
+		
+        try {
+    		System.out.println("Please enter the question prompt: ");
+    		String quizCreate = scanner.next();
+    		String[] answerChoices = {new String("a. "), new String("b. "), new String("c. "), new String("d. ")};
+            for (int num = 0; num <= 3; num++) {
+            	System.out.println("Please enter the answer choice for option " + answerChoices[num]);
+            	quizCreate.concat(answerChoices[num] + scanner.next());
+            }
+            BufferedReader bfr = new BufferedReader(new FileReader("quiz.txt"));
+            // determining quiz number and adding to quiz.txt
+            int quizNumber = 1;
+            while (bfr.readLine() != null) quizNumber++;
+            bfr.close();
+            FileWriter directoryWriter = new FileWriter("quiz.txt");
+            directoryWriter.write("quiz0" + quizNumber);
+            directoryWriter.close();
+            // creating new quiz file and writing to it
+            FileWriter newQuizWriter = new FileWriter(new File("quiz0" + quizNumber));
+            newQuizWriter.write(quizCreate);
+            newQuizWriter.close();
+            // determining randomization
+            System.out.println("Would you like to randomize the order of the questions (Y/N)? ");
+            boolean randomize;
+            String input = scanner.next();
+            if (input.equals("Y"))
+            	randomize = true;
+            else if (input.equals("N"))
+            	randomize = false;
+            // catch tomfoolery
+            else {
+            	while (input != "Y" || input != "N") {
+            		System.out.println("Please enter either Y, for yes, or N, for no.");
+            		System.out.println("Would you like to randomize the order of the questions (Y/N)? ");
+            		input = scanner.next();
+            	}
+            }
+            // TODO: implement question order randomization ...
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**	editQuiz
+	 * 
+	 * 	Method exclusive to Teacher. Reads from the quiz file directory and
+	 *  overwrites a question and answer set within a selected quiz with 
+	 *  a new question and answer set.
+	 */
+	public void editQuiz(Scanner scanner) {
+		
+		/** begin duplicated code **/
+		ArrayList<String> quizList = new ArrayList<>();
+        File quiz = new File("quiz.txt");
+        if (quiz.length() == 0) {
+            // see if quiz.txt is empty
+            System.out.println("There is no quiz!");
+        } else {
+            // if not empty
+            // read from the quiz list
+            try {
+                BufferedReader bfr = new BufferedReader(new FileReader("quiz.txt"));
+                String line = bfr.readLine();
+                while (line != null) {
+                    quizList.add(line);
+                    line = bfr.readLine();
+                }
+                bfr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // display the quiz list
+        for (int i = 0; i < quizList.size(); i++) {
+            System.out.print(i + 1 + ".");
+            System.out.println(quizList.get(i));
+        }
+
+        // select a quiz to view
+        System.out.println("Type a number to select a quiz:");
+        int chooseQuiz = scanner.nextInt();
+        ArrayList<String> quizRead = new ArrayList<>();
+        // chosen quiz name
+        String chosenQuiz = "quiz0" + chooseQuiz + ".txt";
+        File quizToEdit = new File(chosenQuiz);
+        if (chooseQuiz <= quizList.size() && chooseQuiz > 0) { // see if the input range between 1 - quizList.size()
+            if (quizToEdit.exists()) { // see if the file exists
+                try { // read quiz0x
+                    BufferedReader bfr = new BufferedReader(new FileReader(quizToEdit));
+                    String line = bfr.readLine();
+                    while (line != null) {
+                        quizRead.add(line);
+                        line = bfr.readLine();
+                    }
+                    bfr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        /** end duplicated code **/
+        
+        // prompting for the question to be edited
+        System.out.println("Please input the number of the question you would like to edit: ");
+        int questionNumber = scanner.nextInt();
+        String newQuestion = questionNumber + ".\n";
+        int questionIndex = (questionNumber - 1) * 6;
+        quizRead.set(questionIndex, newQuestion);
+        questionIndex++;
+        // prompting for new question prompt
+        System.out.println("Please enter the new question prompt: ");
+        quizRead.set(questionIndex, scanner.next());
+        // creating String array to be indexed through
+        String[] answerChoices = {new String("a. "), new String("b. "), new String("c. "), new String("d. ")};
+        // prompting for new question options
+        for (int num = 0; num <= 3; num++) {
+        	questionIndex++;
+        	System.out.println("Please enter the new answer choice for option " + answerChoices[num]);
+        	quizRead.set(questionIndex, "\n" + answerChoices[num] + scanner.next());
+        }
+        try { // overwrite quiz0x
+            FileWriter fw = new FileWriter(quizToEdit, false);
+            for (int i = 0; i < quizRead.size(); i++) {
+            	fw.write(quizRead.get(i));
+            }
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Quiz " + chooseQuiz + " successfully updated.");
+	}
+    
     public void viewSubmission(Scanner scanner) {
 
         ArrayList<String> quizList = new ArrayList<>();
