@@ -10,6 +10,13 @@ public class Teacher {
         this.userName = userName;
     }
 
+    public void viewMenu() {
+        System.out.println("1. Create a new Quiz");
+        System.out.println("2. Edit a quiz");
+        System.out.println("3. Delete a quiz");
+        System.out.println("4. View a student's submissions");
+    }
+
     public void viewSubmission(Scanner scanner) {
 
         ArrayList<String> quizList = new ArrayList<>();
