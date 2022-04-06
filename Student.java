@@ -9,17 +9,20 @@ import java.util.Date;
 public class Student {
     private String userName;
 
-    //Scanner scanner = new Scanner(System.in);
-
     public Student(String userName) {
         this.userName = userName;
+    }
+
+    public void viewMenu() {
+        String str = "1. Take Quiz\n2. View Grades\n3. Exit";
+        System.out.println(str);
     }
 
     public String getUserName() {
         return this.userName;
     }
 
-    public void takeQuiz() {
+    public void takeQuiz(Scanner scanner) {
         ArrayList<String> quizList = new ArrayList<>();
         File quiz = new File("quiz.txt");
 
@@ -52,6 +55,7 @@ public class Student {
             ArrayList<String> displayQuiz = new ArrayList<>();
             int chooseQuiz = scanner.nextInt();
             String chosenQuiz = quizList.get(chooseQuiz - 1) + ".txt";
+            String currentQuiz = chosenQuiz.substring(0, chosenQuiz.length() - 4);
             try {
                 BufferedReader bfr = new BufferedReader(new FileReader(chosenQuiz));
                 String line = bfr.readLine();
@@ -86,13 +90,13 @@ public class Student {
 
 
                 // submission file
-                String submission = getQuizName() + "_" + getUserName() + ".txt";
+                String submission = currentQuiz + "_" + getUserName() + ".txt";
                 System.out.println(submission);
                 Date date = new Date();
                 Timestamp timestamp = new Timestamp(date.getTime());
                 try { // create the submission file with format of: quizName, userName, Answers, timestamp
                     PrintWriter pw = new PrintWriter(new FileOutputStream(submission));
-                    pw.println(getQuizName());
+                    pw.println(currentQuiz);
                     pw.println(getUserName());
                     for (int i = 1; i <= quizNumber; i++) {
                         pw.println("Question " + i + " answer is: " + answer[i - 1]);
@@ -109,7 +113,7 @@ public class Student {
                 //File myObj = new File("C:\\Users\\15472\\IdeaProjects\\PJ04\\test.txt");
                 File uploadFile = new File(path);
                 ArrayList<String> readFile = new ArrayList<>();
-                String submission = getQuizName() + "_" + getUserName() + ".txt";
+                String submission = currentQuiz + "_" + getUserName() + ".txt";
 
                 if (uploadFile.exists()) {
                     // read the file
@@ -132,7 +136,7 @@ public class Student {
                         Date date = new Date();
                         Timestamp timestamp = new Timestamp(date.getTime());
                         PrintWriter pw = new PrintWriter(new FileOutputStream(submission));
-                        pw.println(getQuizName());
+                        pw.println(currentQuiz);
                         pw.println(getUserName());
                         pw.println("Answers:");
                         for (int i = 1; i <= readFile.size(); i++) {
@@ -220,3 +224,4 @@ public class Student {
         }
     }
 }
+
